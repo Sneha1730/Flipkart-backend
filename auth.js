@@ -28,7 +28,7 @@ router.post("/auth/signup", async (req, res) => {
 
 router.post("/auth/login", async (req, res) => {
   const { email, password } = req.body;
-  const user = awaitUser.findOne({ email });
+  const hashedPassword = await bcrypt.hash(password, 10);
   if (user && (await bcrypt.compare(password, user.password))) {
     const token = jwt.sign({ userId: user._id }, "secret", { expiresIn: "1h" });
   } else {
